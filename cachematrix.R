@@ -1,15 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Chen Lin
+## Uses lexical scoping to calculate inverse of matrix. Assumes input matrix
+## is square and has an inverse.
 
-## Write a short comment describing this function
+## Creates a list of 4 functions: set, get, setinv, and getinv.  Sets matrix,
+## gets matrix using m$get, sets inverse, gets inverse, respectively.
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeMatrix <- function(x = matrix()) {
+  m <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  get <- function() x
+  setinv <- function(inv) m <<- inv
+  getinv <- function() m
+  list(set = set, get = get,
+       setinv = setinv,
+       getinv = getinv)
 }
 
 
-## Write a short comment describing this function
+## Returns the inverse of matrix.  If inverse is already calculated,
+## function returns stored data.  Otherwise, it calculates with
+## solve().
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheinv <- function(x, ...) {
+  m <- x$getinv()
+  if(!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setinv(m)
+  m
 }
